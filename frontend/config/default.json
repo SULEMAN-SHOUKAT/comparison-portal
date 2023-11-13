@@ -1,5 +1,5 @@
 {
   "api": {
-    "comparisonPortal": "http://localhost:3001/comparison-portal/api"
+    "comparisonPortal": "/comparison-portal/api"
   }
 }

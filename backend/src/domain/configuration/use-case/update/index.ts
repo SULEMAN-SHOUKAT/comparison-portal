@@ -17,13 +17,13 @@ export type ConfigurationUpdatePayload = {
 const makeUpdateQuery = (payload: ConfigurationUpdatePayload) => {
   let query = {};
   if (payload.companies) {
-    query = { companies: payload.companies };
+    query = { ...query, companies: payload.companies };
   }
   if (payload.questions) {
-    query = { questions: payload.questions };
+    query = { ...query, questions: payload.questions };
   }
   if (payload.dataSources) {
-    query = { dataSources: payload.dataSources };
+    query = { ...query, dataSources: payload.dataSources };
   }
   return query;
 };
@@ -37,7 +37,6 @@ const update = async (payload: ConfigurationUpdatePayload) => {
     },
   };
   doesConfigExist(payload._id);
-
   const result = await ConfigurationModel.updateOne(
     { _id: payload._id },
     update

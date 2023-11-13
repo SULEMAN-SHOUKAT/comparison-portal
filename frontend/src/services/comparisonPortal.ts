@@ -49,4 +49,26 @@ const addNewConfig = async (configuration: Configuration) => {
   }
 };
 
-export default { getAllConfigs, addNewConfig };
+const editConfig = async (configuration: Configuration) => {
+  try {
+    const response = await axios.put<Configuration>(BASE_URL, configuration);
+    return response.data;
+  } catch (error) {
+    console.error("Error editing   configuration", error);
+    return null;
+  }
+};
+
+const deleteConfig = async (_id: string) => {
+  try {
+    await axios.delete(BASE_URL, {
+      data: { _id: _id },
+    });
+    return "Deleted";
+  } catch (error) {
+    console.error("Error deleting   configuration", error);
+    return null;
+  }
+};
+
+export default { getAllConfigs, addNewConfig, editConfig, deleteConfig };

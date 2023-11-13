@@ -45,7 +45,7 @@ const CompanyInput = ({ companies, onChange }: Props) => {
       <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
         {!!companies?.length &&
           companies.map((company) => (
-            <Grid item>
+            <Grid item key={company.name}>
               <Chip
                 label={company.name}
                 onDelete={() => handleDelete(company)}

@@ -6,7 +6,7 @@ import comparisonPortalService, {
 const useMutateConfig = () => {
   const queryClient = useQueryClient();
 
-  const mutateConfig = useMutation({
+  const createConfig = useMutation({
     mutationFn: (configuration: Configuration) =>
       comparisonPortalService.addNewConfig(configuration),
     onSuccess: () => {
@@ -14,7 +14,26 @@ const useMutateConfig = () => {
     },
   });
 
-  return mutateConfig;
+  const editConfig = useMutation({
+    mutationFn: (configuration: Configuration) =>
+      comparisonPortalService.editConfig(configuration),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["configsQuery"] });
+    },
+  });
+
+  const deleteConfig = useMutation({
+    mutationFn: (_id: string) => comparisonPortalService.deleteConfig(_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["configsQuery"] });
+    },
+  });
+
+  return {
+    createConfig,
+    editConfig,
+    deleteConfig,
+  };
 };
 
 export default useMutateConfig;

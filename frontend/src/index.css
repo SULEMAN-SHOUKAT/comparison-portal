@@ -4,3 +4,20 @@ body{
     margin: 0px;
 }
 
+.xs-scroll-bar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    display: none
+  }
+  
+.xs-scroll-bar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+.xs-scroll-bar::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+.xs-scroll-bar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

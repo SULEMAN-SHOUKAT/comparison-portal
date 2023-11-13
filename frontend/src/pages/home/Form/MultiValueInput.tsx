@@ -33,7 +33,7 @@ const MultiValueInput = ({ values, onChange, label }: Props) => {
       <Grid container spacing={2} sx={{ marginBottom: "20px" }}>
         {!!values?.length &&
           values.map((val) => (
-            <Grid item>
+            <Grid item key={val}>
               <Chip label={val} onDelete={() => handleDelete(val)} />
             </Grid>
           ))}

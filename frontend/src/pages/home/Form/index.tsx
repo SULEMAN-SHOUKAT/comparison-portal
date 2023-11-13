@@ -7,6 +7,7 @@ import CompanyInput from "./CompanyInput";
 import MultiValueInput from "./MultiValueInput";
 import {
   Company,
+  Configuration,
   DataSource,
   Question,
 } from "../../../services/comparisonPortal";
@@ -28,15 +29,22 @@ const steps = ["Add companies", "Add sources", "Add questions"];
 
 type Props = {
   buttonTitle: string;
+  confgiuration?: Configuration;
 };
-const ConfigurationForm = ({ buttonTitle }: Props) => {
+const ConfigurationForm = ({ buttonTitle, confgiuration }: Props) => {
   const [open, setOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState<number[]>([]);
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [dataSources, setDataSources] = useState<DataSource[]>([]);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const configMutation = useMutateConfig();
+  const [companies, setCompanies] = useState<Company[]>(
+    confgiuration?.companies || []
+  );
+  const [dataSources, setDataSources] = useState<DataSource[]>(
+    confgiuration?.dataSources || []
+  );
+  const [questions, setQuestions] = useState<Question[]>(
+    confgiuration?.questions || []
+  );
+  const { createConfig, editConfig } = useMutateConfig();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -55,8 +63,24 @@ const ConfigurationForm = ({ buttonTitle }: Props) => {
     setSkipped(newSkipped);
   };
 
+  const isEditMode = confgiuration;
+
   const handleSubmit = async () => {
-    await configMutation.mutate({ companies, questions, dataSources });
+    if (isEditMode) {
+      await editConfig.mutate({
+        companies,
+        questions,
+        dataSources,
+        _id: confgiuration?._id,
+      });
+    } else {
+      await createConfig.mutate({
+        companies,
+        questions,
+        dataSources,
+      });
+    }
+
     handleClose();
   };
 
@@ -71,8 +95,8 @@ const ConfigurationForm = ({ buttonTitle }: Props) => {
   };
 
   return (
-    <Box>
-      <Button variant="contained" onClick={handleOpen}>
+    <Box sx={{ width: "100%" }}>
+      <Button variant="contained" onClick={handleOpen} sx={{ width: "100%" }}>
         {buttonTitle}
       </Button>
       <Modal open={open} onClose={handleClose}>
